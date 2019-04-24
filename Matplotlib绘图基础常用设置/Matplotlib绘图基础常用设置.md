@@ -166,7 +166,7 @@ plt.show()
 ### plt.rcParams['figure.figsize']=[12,8]
 + 把图设置为12*8 大小
 
-## 倒入模块就设置全局参数
+## 导入模块就设置全局参数
 
 
 ```python
@@ -189,6 +189,12 @@ plt.rcParams['ytick.labelsize']=14
 plt.rcParams['legend.fontsize']=14
 # 图大小
 plt.rcParams['figure.figsize']=[12,8]
+# x轴标线方向
+plt.rcParams['xtick.direction']= 'in'      # direction: in, out, or inout
+# y轴标线方向
+mpl.rcParams['ytick.direction'] = 'in'
+# 也可按下列方式设置
+# ax.tick_params(which='both', direction='in')
 
 plt.xlabel('我是x轴')
 plt.ylabel('我是y轴')
@@ -265,4 +271,20 @@ print(plt.style.available)
 ```
 
     ['bmh', 'classic', 'dark_background', 'fast', 'fivethirtyeight', 'ggplot', 'grayscale', 'seaborn-bright', 'seaborn-colorblind', 'seaborn-dark-palette', 'seaborn-dark', 'seaborn-darkgrid', 'seaborn-deep', 'seaborn-muted', 'seaborn-notebook', 'seaborn-paper', 'seaborn-pastel', 'seaborn-poster', 'seaborn-talk', 'seaborn-ticks', 'seaborn-white', 'seaborn-whitegrid', 'seaborn', 'Solarize_Light2', 'tableau-colorblind10', '_classic_test']
-    
+
+## 设置x轴标注在标线内居中
+
+- 通过设置主副标记实现
+
+```python
+# 设置标记内容
+xlabels = range(1, len(valueList1) // 48)
+# 设置主标记，显示为一个较长的短线
+plt.xticks([x for x in range(-1,len(valueList1) + 1) if (x + 1) % 48 == 0])
+# 设置主标记的标注为空
+ax.set_xticklabels('')
+# 设置次标记，显示为一个较短的短线
+ax.set_xticks([x + 24 for x in range(len(valueList1) + 1) if (x + 1) % 48 == 0], minor=True)
+# 设置此标记的标注，其位置与副标记对应，从而间接实现居中
+ax.set_xticklabels(xlabels, minor=True)
+```
